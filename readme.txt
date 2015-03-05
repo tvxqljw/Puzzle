@@ -1,1 +1,1 @@
-<h1>Puzzle Game</h1>
+Puzzle Game
