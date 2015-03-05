@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d8ee60c-cdc9-4107-9cdf-7a70ea04b4e4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resource/css/contentbank.css" afterPath="$PROJECT_DIR$/resource/css/contentbank.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resource/css/puzzle.css" afterPath="$PROJECT_DIR$/resource/css/puzzle.css" />
     </list>
     <ignored path="lijingwen.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,28 +29,31 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.7241379" vertical-offset="150" max-vertical-offset="2025">
-              <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
-              <folding />
+            <state vertical-scroll-proportion="-4.3103447" vertical-offset="450" max-vertical-offset="2075">
+              <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+              <folding>
+                <element signature="n#style#0;n#p#0;n#div#0;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="contentbank.css" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="contentbank.css" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resource/css/contentbank.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6666667" vertical-offset="8941" max-vertical-offset="34400">
+            <state vertical-scroll-proportion="0.0" vertical-offset="8941" max-vertical-offset="34400">
               <caret line="377" column="0" selection-start-line="377" selection-start-column="0" selection-end-line="378" selection-end-column="25" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="puzzle.css" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="puzzle.css" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resource/css/puzzle.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3025">
-              <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.33829498" vertical-offset="1400" max-vertical-offset="3075">
+              <caret line="66" column="9" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -83,10 +87,10 @@
         <option value="$PROJECT_DIR$/other/other.js" />
         <option value="$PROJECT_DIR$/puzzle.css" />
         <option value="$PROJECT_DIR$/pintu.js" />
-        <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/resource/css/puzzle.css" />
         <option value="$PROJECT_DIR$/resource/lib/puzzle.js" />
         <option value="$PROJECT_DIR$/resource/css/contentbank.css" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/resource/css/puzzle.css" />
       </list>
     </option>
   </component>
@@ -423,7 +427,7 @@
       <workItem from="1425292018456" duration="9991000" />
       <workItem from="1425551155351" duration="299000" />
       <workItem from="1425551485812" duration="4349000" />
-      <workItem from="1425557199789" duration="1315000" />
+      <workItem from="1425557199789" duration="1641000" />
     </task>
     <task id="LOCAL-00001" summary="share">
       <created>1425551716476</created>
@@ -433,7 +437,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15954000" />
+    <option name="totallyTimeSpent" value="16280000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -493,7 +497,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="2025">
           <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -519,7 +526,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="200" max-vertical-offset="1400">
           <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -527,7 +537,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="190" max-vertical-offset="1400">
           <caret line="17" column="48" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="48" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -538,11 +551,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resource/css/puzzle.css">
+    <entry file="file://$PROJECT_DIR$/resource/css/contentbank.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2286" max-vertical-offset="3025">
-          <caret line="99" column="11" selection-start-line="99" selection-start-column="11" selection-end-line="99" selection-end-column="11" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="8941" max-vertical-offset="34400">
+          <caret line="377" column="0" selection-start-line="377" selection-start-column="0" selection-end-line="378" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.3103447" vertical-offset="450" max-vertical-offset="2075">
+          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
+          <folding>
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#1;n#div#1;n#div#1;n#section#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -556,18 +580,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/resource/css/puzzle.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.7241379" vertical-offset="150" max-vertical-offset="2025">
-          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resource/css/contentbank.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6666667" vertical-offset="8941" max-vertical-offset="34400">
-          <caret line="377" column="0" selection-start-line="377" selection-start-column="0" selection-end-line="378" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.33829498" vertical-offset="1400" max-vertical-offset="3075">
+          <caret line="66" column="9" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="11" />
           <folding />
         </state>
       </provider>
