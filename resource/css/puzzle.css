@@ -1,0 +1,23 @@
+.puzzle-title{
+    margin:10px 0;
+    text-align: center;
+}
+.puzzle{
+    text-align: center;
+    margin:10px 0;
+}
+.puzzle-origin{
+    margin:10px 0;
+}
+
+.puzzle-area{
+    border: 5px #000 solid;
+    margin: 0 auto;
+    position: relative;
+    background:#eee;
+
+}
+.origin{
+    border: 5px #000 solid;
+    margin: 0 auto;
+}
