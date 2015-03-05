@@ -23,7 +23,7 @@ function Puzzle(url){
 	_this.url = url;
 	_this.error = false;
 	_this.error_msg = '';
-	_this.qukuai_wh = 390;
+	_this.qukuai_wh = 320;
 	_this.row_col = 3;
 	_this.box_border_width = 1;
 	_this.qu_margin = 10;

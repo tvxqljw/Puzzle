@@ -97,12 +97,15 @@ footer{
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 50px;
+    height: 30px;
     background: #283038;
     border-top: 5px #1D2429 solid;
 }
 
 footer p{
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
     text-align: center;
     color: #fff;
 }
