@@ -6,12 +6,22 @@
     <link rel="stylesheet" href="resource/css/contentbank.css">
     <link rel="stylesheet" href="resource/css/puzzle.css">
     <meta charset="utf-8" />
-    <title>Pin Tu</title>
+    <title>Puzzle</title>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="container">
+<section class="wrapper">
+    <header>
+            <img id="logo" src="resource/img/logo.png">
+            <h1>Puzzle</h1>
+    </header>
+    <hr class="layout">
+    <!--Open screen container-->
+    <div class="container" id="Open">
+        <button id="startgameButton"><h2>start</h2></button>
+    </div>
+    <!--Game container-->
+    <div class="container" id="Game" style="display: none">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="puzzle-title" id="puzzle-title">
@@ -22,25 +32,40 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="puzzle" id="puzzle">
-                    puzzle
+                    puzzle body
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="puzzle-origin" id="puzzle-origin">
-                    origin
+                    origin img
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
+<footer>
+    <p>© 2015 <a href="https://github.com/tvxqljw">Ljw</a></p>
+</footer>
 </body>
 </html>
 
 <script type='text/javascript' src="resource/lib/jquery-1.9.1.min.js"></script>
-<script type='text/javascript' src="resource/lib/pintu.js"></script>
+<script type='text/javascript' src="resource/lib/puzzle.js"></script>
 <script type='text/javascript'>
-     pintu('resource/img/01.jpg');
+    $(function(){
+        //ico
+        loadlogo("resource/img/logo.ico");
+        //button event
+        $('#startgameButton').bind('click',function(){
+            $('#Open').css('display','none');
+            $('#Game').css('display','block');
+        });
+        //Game start
+        Puzzle('resource/img/01.jpg');
+    });
+
+
 </script>
 
 

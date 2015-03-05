@@ -1,4 +1,22 @@
-function pintu(url){
+/**
+ * Created by lijingwen on 2015-03-02.
+ */
+
+/***
+ * 图标加载
+ * @param url 图片路径
+ */
+function loadlogo(url){
+    var link = document.createElement("link");
+    link.type = "image/x-icon";
+    link.rel  = "shortcut icon";
+    link.href  = url;
+    var head = document.getElementsByTagName("head")[0];
+    head.appendChild(link);
+    console.log('finished logo');
+}
+
+function Puzzle(url){
 
     //图片对象
 	var _this = this;
@@ -109,7 +127,7 @@ function pintu(url){
 					_this.ranArr.splice(index,1);
 					var is_class = 'box san';
 					var is_cursor = 'cursor:pointer;';
-					var z_index = 999999;
+					var z_index = 999;
 				}
 
 				html += '<div x='+_this.zqArr[i].x+' y='+_this.zqArr[i].y+' class="'+is_class+'" style="position:absolute;border:1px solid #eee; width:'+_this.box_wh+'px;height:'+_this.box_wh+'px;margin-top:-1px;margin-left:-1px;'+background+'left:'+_this.box_wh+'px;top:'+_this.box_wh+'px;'+is_cursor+'z-index:'+z_index+';" ranx='+pos.x+' rany='+pos.y+'></div>';
