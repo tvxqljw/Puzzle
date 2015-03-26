@@ -26,35 +26,44 @@ function loadlogo(url){
 function Puzzle(path,imgsize){
     //img obj
 	var puzzleObj = this;
-    
+
 	puzzleObj.url = path;//img path
 	puzzleObj.size = imgsize;//img size
 
 
     //default
     puzzleObj.rc_num = 3;//row and col num
-    puzzleObj.blank_num = 2;// default blank num
-    puzzleObj.move_speed = 50;//speed
+    puzzleObj.blank_num = 4;// default image index blank
+    puzzleObj.move_speed = 50;// move speed
+    puzzleObj.click_num = 0;
 
 
+    /**
+     * 图片加载
+     */
 	// image handle
 	puzzleObj.imageHandle = function(){
 
 		// create imgae
-		var img = new Image();
-		img.src = puzzleObj.url;
+//		var img = new Image();
+//		img.src = puzzleObj.url;
         puzzleObj.CreatePuzzle()
-
 	};
 
 
+    /***
+     * CreatePuzzle
+     * 创建拼图坐标和位置
+     */
 	// Create puzzle
-	puzzleObj.CreatePuzzle = function(){	
+	puzzleObj.CreatePuzzle = function(){
         //box size
 		puzzleObj.box_wh = puzzleObj.size/puzzleObj.rc_num;
+
 		// every blocks attribute : x y
 		puzzleObj.attr = new Array();
-		for(var i=0,k=0;i<puzzleObj.rc_num*puzzleObj.rc_num;i++){
+        var total_box = puzzleObj.rc_num*puzzleObj.rc_num;
+		for(var i=0,k=0;i<total_box;i++){
 
 			if(i>0 && i%puzzleObj.rc_num==0) k++;
 
@@ -65,7 +74,7 @@ function Puzzle(path,imgsize){
 
 			console.log('x:'+puzzleObj.attr[i].x+',y:'+puzzleObj.attr[i].y);
 		}
-	
+
 		// random
 		puzzleObj.ranArr = puzzleObj.rd(puzzleObj.attr);
         console.log('ran:'+puzzleObj.ranArr);
@@ -120,7 +129,7 @@ function Puzzle(path,imgsize){
 		obj.animate(
 			{ 'left':Number(obj.attr('ranx')),'top':Number(obj.attr('rany')) },
             //animation
-			puzzleObj.move_speed*0,
+			puzzleObj.move_speed*1,
 			false,
 			function(){
 				$(this).removeClass('san').removeAttr('ranx').removeAttr('rany');
@@ -137,13 +146,13 @@ function Puzzle(path,imgsize){
     // clicks event!
 	puzzleObj.create_click = function(){
 		$('#puzzle'+'>div.puzzle-area:eq(0)>div.box').each(function(){
-	
+
 			$(this).get(0).onclick = function(obj){
 				return function(){
 					if(obj.click_lock) return;
 
 					obj.click_lock = true;
-					
+
 					var divpuzzleObj = $(this);
 					var blank_obj = $('#puzzle'+'>div.puzzle-area:eq(0)>div.blank');
 					var div_pos = obj.GetCoord(divpuzzleObj);
@@ -155,20 +164,20 @@ function Puzzle(path,imgsize){
 						divpuzzleObj.animate({'top':blank_pos.y},obj.move_speed,false,function(){
 							// check
 							obj.check_ok();
-						});								
+						});
 					}else if(div_pos.y==blank_pos.y && Math.abs(div_pos.x-blank_pos.x)==obj.box_wh){
-														
+
 						blank_obj.css('left',div_pos.x);
 						divpuzzleObj.animate({'left':blank_pos.x},obj.move_speed,false,function(){
 							obj.check_ok();
-						});						
+						});
 					}else{
 						puzzleObj.click_lock = false;
 						return false;
 					}
 				};
 			}(puzzleObj);
-		});	
+		});
 
 		puzzleObj.click_lock = false;
 	};
@@ -176,39 +185,43 @@ function Puzzle(path,imgsize){
 	//Check
 	puzzleObj.check_ok = function(){
 		var is_pinhao = true;
-        //每个坐标对应测试
+        //match every coord
 		$('#puzzle'+'>div.puzzle-area:eq(0)>div').each(function(){
-			var dq_pos = puzzleObj.GetCoord($(this));
+			var dq_pos = puzzleObj.GetCoord($(this));//left(x) and top(y)
 			if( $(this).attr('x')!=dq_pos.x || $(this).attr('y')!=dq_pos.y ){
-				is_pinhao = false;	
+				is_pinhao = false;
 			}
-		});			
+		});
 
 		if(is_pinhao){
-            var count =$('.blank_num').text();
+            var count =$('.click_num').text();
 			alert('Congratulations！ You have used '+count+' steps to fimageHandlesh this puzzle!');
 		}else{
-			puzzleObj.blank_num++;
-			$('.blank_num').html(puzzleObj.blank_num);
-			puzzleObj.click_lock = false;
+            puzzleObj.click_num ++;
+            $('.click_num').html(puzzleObj.click_num);
+            puzzleObj.click_lock = false;
 		}
-	};	
+	};
 
 	// get x y attribute
 	puzzleObj.GetCoord = function(obj){
-		return {'x':parseInt(obj.css('left')),'y':parseInt(obj.css('top'))};	
+		return {'x':parseInt(obj.css('left')),'y':parseInt(obj.css('top'))};
 	};
 
-	// random
+	// random 1~8
 	puzzleObj.random = function(n,m){
-		var c = m-n+1;  
+		var c = m-n+1;
+        //random from 8 to 1
 		return Math.floor(Math.random() * c + n);
 	};
+
+    //
 	puzzleObj.rd = function(arr){
 		var tmp = [];
 
 		for(var i=0;i<arr.length;i++){
 			if(i!==Math.floor(puzzleObj.rc_num*puzzleObj.rc_num/2)){
+			//the one in the middle is empty
 				tmp.push(arr[i]);
 			}
 		}
