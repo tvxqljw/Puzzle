@@ -2,6 +2,114 @@
  * Created by lijingwen on 2015-03-02.
  */
 
+//alldata
+var userdata = {
+    'level':{
+        '01':{
+            'step':0,
+            'pass':false
+        },
+        '02':{
+            'step':0,
+            'pass':false
+        },
+        '03':{
+            'step':0,
+            'pass':false
+        },
+        '04':{
+            'step':0,
+            'pass':false
+        }
+    }
+};
+
+
+/***
+ * OnLoad
+ *
+ */
+$(function(){
+    //ico
+    loadlogo("resource/img/logo.ico");
+    var username;
+
+
+    //process
+    $({property: 0}).animate(
+        {property: 100}, {
+            duration: 1000,
+            step: function() {
+                var percentage = Math.round(this.property);
+                $('#process').css('width',  percentage+"%");
+                $('.process_num').html(percentage+'%');
+                if(percentage == 100) {
+                    $("#process").addClass("done");//done，hide the process bar
+                    $(".process_num").addClass("done");
+                    $('#Open').css('display','block');
+
+                }
+            }
+        });
+
+    //button event
+    $('#startgameButton').bind('click',function(){
+        //verify
+        username = $('#username').val();
+        var username_input = $('.open_input_box'), alarm_text = $('#alarm span');
+        if(username == '' || username == null || username == 'undefined'){
+            //username is empty
+            alarm_text.text('Username is necessary!');
+            username_input.addClass('alarm');
+            username_input.focus();
+        }else{
+            $('.username').html(username);
+            $('#Open').css('display','none');
+            $('#Level').css('display','block');
+            loadLevel(userdata);
+        }
+
+    });
+
+    //level image click
+    $('.level_img').live('click',function(){
+        $('#Level').css('display','none');
+        $('#Game').css('display','block');
+
+        var imgId = $(this).attr('id'),
+            deviceType = '',
+            size = 300,
+            imgSrc='';
+        //resolution
+        if(document.body.clientWidth <= 768){
+            console.log("phone");
+            deviceType = 'phone';
+            size = 300;
+        }
+        else if(document.body.clientWidth >= 992  && document.body.clientWidth <1200){
+            console.log("pad");
+            deviceType = 'pad';
+            size = 360;
+        }
+        else{
+            console.log("PC");
+            deviceType = 'PC';
+            size = 420;
+        }
+
+        imgSrc = 'resource/img/'+imgId+'-'+deviceType+'.jpg';
+        console.log(imgSrc);
+
+        Puzzle(imgSrc,size,deviceType);
+    });
+
+    $('.username').bind('click',function(){
+        $('#Game').css('display','none');
+        $('#Level').css('display','block');
+        loadLevel(userdata);
+    });
+});
+
 /***
  * logo loading
  * @param url 图片路径
@@ -18,218 +126,304 @@ function loadlogo(url){
 
 
 /***
+ * loadLevel
+ * @param username 图片路径
+ */
+function loadLevel(userdata){
+
+    loadLevel_success(userdata);
+    //load_data('/LoadLevel',{'username':username},loadLevel_success,loadLevel_fail);
+
+    function loadLevel_success(data){
+        var userdata = data;
+        var html = '',imgId='',pass=false,imgSrc;
+        for(var i in userdata.level){
+            imgId =i;
+            pass = userdata.level[i].pass;
+            imgSrc = 'resource/img/'+imgId+'-phone.jpg';
+            html+='<div class="col-lg-3 col-md-4 col-sm-12 level_img_box">'+
+                '<div class="level_img" id="'+imgId+'">'+
+                '<img src="'+imgSrc+'"/>';
+            if(pass){
+                html+= '<div class="mask"></div>';
+            }else{
+                html+= '<div class="mask" style="display: none"></div>';
+            }
+            html+='</div>'+
+                '</div>';
+        }
+
+        $('#level_row').html(html);
+    }
+
+    function loadLevel_fail(){
+        alert('fail');
+    }
+}
+
+
+/***
  * Puzzle main function
  * @param url
  * @returns {Puzzle}
  * @constructor
  */
-function Puzzle(path,imgsize){
-    //img obj
-	var puzzleObj = this;
+function Puzzle(path,imgsize,device){
 
-	puzzleObj.url = path;//img path
-	puzzleObj.size = imgsize;//img size
+    var puzzleObj = function(el) {
+        this.url = path;//img path
+        this.size = imgsize;//img size
+
+        //default
+        this.rc_num = 3;//row and col num
+        this.blank_num = 4;// default image index blank
+        this.move_speed = 50;// move speed
+        this.click_num = 0;//step count
+    };
+
+    puzzleObj.prototype = {
+        init: function(){
+            var me = this;
+
+            me.CreatePuzzle();
+            return me;
+        },
+
+        /**
+         * imageHandle
+         * 图片加载
+         */
+        imageHandle: function(){
+
+            var me = this;
+            me.CreatePuzzle();
+        },
+
+        /***
+         * CreatePuzzle
+         * 创建拼图坐标和位置
+         */
+        CreatePuzzle: function(){
+            var me = this;
+
+            //box size
+            me.box_wh = me.size/me.rc_num;
+
+            // every blocks attribute : x y
+            me.attr = new Array();
+            var total_box = me.rc_num*me.rc_num;
+            for(var i=0,k=0;i<total_box;i++){
+
+                if(i>0 && i%me.rc_num==0) k++;
+
+                me.attr.push({
+                    'x':i%me.rc_num * me.box_wh,
+                    'y':k*me.box_wh
+                });
+
+                console.log('x:'+me.attr[i].x+',y:'+me.attr[i].y);
+            }
+
+            // random
+            me.ranArr = me.rd(me.attr);
+            console.log('ran:'+me.ranArr);
 
 
-    //default
-    puzzleObj.rc_num = 3;//row and col num
-    puzzleObj.blank_num = 4;// default image index blank
-    puzzleObj.move_speed = 50;// move speed
-    puzzleObj.click_num = 0;
+            //puzzle-area
+            var html = '';
+            var wh = me.size+8;
+            html += '<div class="puzzle-area" style="width:'+wh+'px;height:'+wh+'px;">';
+
+            //puzzle-every-blocks
+            var background,pos,_class,_cursor,z_index,index;
+            for(var i=0,k=0;i<me.rc_num*me.rc_num;i++){//the blank box
+                if(i == me.blank_num){
+                    background = '';
+                    pos = {'x':me.box_wh,'y':me.box_wh};
+                    _class = 'blank';
+                    _cursor = '';
+                    z_index = 0;
+                }else{
+                    //other boxes
+                     background = 'background:url('+me.url+') -'+me.attr[i].x+'px -'+me.attr[i].y+'px;';
+                     index = me.random(0,me.ranArr.length-1);//catch one coord
+                     pos = me.ranArr[index];//coord
+                     me.ranArr.splice(index,1);//delete one
+                     _class = 'box';
+                     _cursor = 'cursor:pointer;';
+                     z_index = 999;
+                }
+
+                html += '<div x='+me.attr[i].x+' y='+me.attr[i].y+' class="'+_class+'" style="position:absolute;border:1px solid #eee; width:'+me.box_wh+'px;height:'+me.box_wh+'px;margin-top:-1px;margin-left:-1px;'+background+'left:'+pos.x+'px;top:'+pos.y+'px;'+_cursor+'z-index:'+z_index+';" ranx='+pos.x+' rany='+pos.y+'></div>';
+            }
+
+            html += '</div>';
+
+            html += '<div>';
+
+            $('#puzzle').html(html);
+
+            //origin image
+            var origin ='';
+            var orginwh=me.size+8;
+            origin += '<div class="origin" '+
+                'style="width:'+orginwh+'px;'+
+                'height:'+orginwh+'px;'+
+                'background:url('+me.url+') 0 0 no-repeat;'+
+                'background-size:cover;">';
+            origin += '</div>';
+
+            if(device != "phone"){
+                //not exist in phone device
+                $('#puzzle-origin').html(origin);
+            }
+
+            //devide
+            //me.san();
+            me.create_click();
+        },
+
+        san: function(){
+            var me = this;
+
+            var obj = $('#puzzle'+'>div.puzzle-area:eq(0)>div.san:eq(0)');
+            obj.animate(
+                { 'left':Number(obj.attr('ranx')),'top':Number(obj.attr('rany')) },
+                //animation
+                    me.move_speed*0,
+                false,
+                function(){
+                    $(this).removeClass('san').removeAttr('ranx').removeAttr('rany');
+                    if($('#puzzle'+'>div.puzzle-area:eq(0)>div.san').length>=1){
+                        me.san();
+                    }else{
+                        // clicks event!
+                        me.create_click();
+                    }
+                }
+            );
+        },
+
+        create_click: function(){
+            var me = this;
+
+            $('#puzzle'+'>div.puzzle-area:eq(0)>div.box').each(function(){
+
+                $(this).get(0).onclick = function(obj){
+                    return function(){
+                        if(obj.click_lock) return;
+
+                        obj.click_lock = true;
+
+                        var divpuzzleObj = $(this);
+                        var blank_obj = $('#puzzle'+'>div.puzzle-area:eq(0)>div.blank');
+                        var div_pos = obj.GetCoord(divpuzzleObj);
+                        var blank_pos = obj.GetCoord(blank_obj);
+
+                        //move available
+                        if(div_pos.x==blank_pos.x && Math.abs(div_pos.y-blank_pos.y)==obj.box_wh){
+                            blank_obj.css('top',div_pos.y);
+                            divpuzzleObj.animate({'top':blank_pos.y},obj.move_speed,false,function(){
+                                // check
+                                obj.check_ok();
+                            });
+                        }else if(div_pos.y==blank_pos.y && Math.abs(div_pos.x-blank_pos.x)==obj.box_wh){
+
+                            blank_obj.css('left',div_pos.x);
+                            divpuzzleObj.animate({'left':blank_pos.x},obj.move_speed,false,function(){
+                                obj.check_ok();
+                            });
+                        }else{
+                            me.click_lock = false;
+                            return false;
+                        }
+                    };
+                }(me);
+            });
+
+            me.click_lock = false;
+        },
+
+        check_ok: function(){
+            var me = this;
+            var is_pinhao = true;
+            //match every coord
+            $('#puzzle'+'>div.puzzle-area:eq(0)>div').each(function(){
+                var dq_pos = me.GetCoord($(this));//left(x) and top(y)
+                if( $(this).attr('x')!=dq_pos.x || $(this).attr('y')!=dq_pos.y ){
+                    is_pinhao = false;
+                }
+            });
+
+            if(is_pinhao){
+                var count =$('.click_num').text();
+                alert('Congratulations！ You have used '+count+' steps to fimageHandlesh this puzzle!');
+                userdata.level[imgId].pass = true;
+                console.log(userdata);
+                $('#Game').css('display','none');
+                $('#Level').css('display','block');
+                loadLevel(userdata);
+            }else{
+                me.click_num ++;
+                $('.click_num').html(me.click_num);
+                me.click_lock = false;
+            }
+        },
+
+        GetCoord: function(obj){
+            return {'x':parseInt(obj.css('left')),'y':parseInt(obj.css('top'))};
+        },
+
+        random: function(n,m){
+            var c = m-n+1;
+            //random from 8 to 1
+            return Math.floor(Math.random() * c + n);
+        },
+
+        rd: function(arr){
+            var me = this;
+
+            var tmp = [];
+
+            for(var i=0;i<arr.length;i++){
+                if(i!==Math.floor(me.rc_num*me.rc_num/2)){
+                    //the one in the middle is empty
+                    tmp.push(arr[i]);
+                }
+            }
+            return tmp;
+        }
+    };
 
 
-    /**
-     * 图片加载
-     */
-	// image handle
-	puzzleObj.imageHandle = function(){
-
-		// create imgae
-//		var img = new Image();
-//		img.src = puzzleObj.url;
-        puzzleObj.CreatePuzzle()
-	};
-
-
-    /***
-     * CreatePuzzle
-     * 创建拼图坐标和位置
-     */
-	// Create puzzle
-	puzzleObj.CreatePuzzle = function(){
-        //box size
-		puzzleObj.box_wh = puzzleObj.size/puzzleObj.rc_num;
-
-		// every blocks attribute : x y
-		puzzleObj.attr = new Array();
-        var total_box = puzzleObj.rc_num*puzzleObj.rc_num;
-		for(var i=0,k=0;i<total_box;i++){
-
-			if(i>0 && i%puzzleObj.rc_num==0) k++;
-
-			puzzleObj.attr.push({
-				'x':i%puzzleObj.rc_num * puzzleObj.box_wh,
-				'y':k*puzzleObj.box_wh
-			});
-
-			console.log('x:'+puzzleObj.attr[i].x+',y:'+puzzleObj.attr[i].y);
-		}
-
-		// random
-		puzzleObj.ranArr = puzzleObj.rd(puzzleObj.attr);
-        console.log('ran:'+puzzleObj.ranArr);
-
-
-        //puzzle-area
-        var html = '';
-			var wh = puzzleObj.size+8;
-			html += '<div class="puzzle-area" style="width:'+wh+'px;height:'+wh+'px;">';
-
-        //puzzle-every-blocks
-			for(var i=0,k=0;i<puzzleObj.rc_num*puzzleObj.rc_num;i++){
-				if(i == puzzleObj.blank_num){
-					var background = '';
-					var pos = {'x':puzzleObj.box_wh,'y':puzzleObj.box_wh};
-					var is_class = 'blank';
-					var is_cursor = '';
-					var z_index = 0;
-				}else{
-					var background = 'background:url('+puzzleObj.url+') -'+puzzleObj.attr[i].x+'px -'+puzzleObj.attr[i].y+'px;';
-					var index = puzzleObj.random(0,puzzleObj.ranArr.length-1);
-					var pos = puzzleObj.ranArr[index];
-					puzzleObj.ranArr.splice(index,1);
-					var is_class = 'box san';
-					var is_cursor = 'cursor:pointer;';
-					var z_index = 999;
-				}
-
-				html += '<div x='+puzzleObj.attr[i].x+' y='+puzzleObj.attr[i].y+' class="'+is_class+'" style="position:absolute;border:1px solid #eee; width:'+puzzleObj.box_wh+'px;height:'+puzzleObj.box_wh+'px;margin-top:-1px;margin-left:-1px;'+background+'left:'+puzzleObj.box_wh+'px;top:'+puzzleObj.box_wh+'px;'+is_cursor+'z-index:'+z_index+';" ranx='+pos.x+' rany='+pos.y+'></div>';
-			}
-
-			html += '</div>';
-
-        html += '<div>';
-
-		$('#puzzle').html(html);
-
-        var origin ='';
-        var orginwh=puzzleObj.size+8;
-        origin += '<div class="origin" style="width:'+orginwh+'px;height:'+orginwh+'px;background:url('+puzzleObj.url+') 0 0 no-repeat;">';
-        origin += '</div>';
-
-        $('#puzzle-origin').html(origin);
-
-		puzzleObj.san();
-        puzzleObj.create_click();
-	};
-
-	puzzleObj.san = function(){
-		var obj = $('#puzzle'+'>div.puzzle-area:eq(0)>div.san:eq(0)');
-
-		obj.animate(
-			{ 'left':Number(obj.attr('ranx')),'top':Number(obj.attr('rany')) },
-            //animation
-			puzzleObj.move_speed*1,
-			false,
-			function(){
-				$(this).removeClass('san').removeAttr('ranx').removeAttr('rany');
-				if($('#puzzle'+'>div.puzzle-area:eq(0)>div.san').length>=1){
-					puzzleObj.san();
-				}else{
-					// clicks event!
-					puzzleObj.create_click();
-				}
-			}
-		);
-	};
-
-    // clicks event!
-	puzzleObj.create_click = function(){
-		$('#puzzle'+'>div.puzzle-area:eq(0)>div.box').each(function(){
-
-			$(this).get(0).onclick = function(obj){
-				return function(){
-					if(obj.click_lock) return;
-
-					obj.click_lock = true;
-
-					var divpuzzleObj = $(this);
-					var blank_obj = $('#puzzle'+'>div.puzzle-area:eq(0)>div.blank');
-					var div_pos = obj.GetCoord(divpuzzleObj);
-					var blank_pos = obj.GetCoord(blank_obj);
-
-					//move available
-					if(div_pos.x==blank_pos.x && Math.abs(div_pos.y-blank_pos.y)==obj.box_wh){
-						blank_obj.css('top',div_pos.y);
-						divpuzzleObj.animate({'top':blank_pos.y},obj.move_speed,false,function(){
-							// check
-							obj.check_ok();
-						});
-					}else if(div_pos.y==blank_pos.y && Math.abs(div_pos.x-blank_pos.x)==obj.box_wh){
-
-						blank_obj.css('left',div_pos.x);
-						divpuzzleObj.animate({'left':blank_pos.x},obj.move_speed,false,function(){
-							obj.check_ok();
-						});
-					}else{
-						puzzleObj.click_lock = false;
-						return false;
-					}
-				};
-			}(puzzleObj);
-		});
-
-		puzzleObj.click_lock = false;
-	};
-
-	//Check
-	puzzleObj.check_ok = function(){
-		var is_pinhao = true;
-        //match every coord
-		$('#puzzle'+'>div.puzzle-area:eq(0)>div').each(function(){
-			var dq_pos = puzzleObj.GetCoord($(this));//left(x) and top(y)
-			if( $(this).attr('x')!=dq_pos.x || $(this).attr('y')!=dq_pos.y ){
-				is_pinhao = false;
-			}
-		});
-
-		if(is_pinhao){
-            var count =$('.click_num').text();
-			alert('Congratulations！ You have used '+count+' steps to fimageHandlesh this puzzle!');
-		}else{
-            puzzleObj.click_num ++;
-            $('.click_num').html(puzzleObj.click_num);
-            puzzleObj.click_lock = false;
-		}
-	};
-
-	// get x y attribute
-	puzzleObj.GetCoord = function(obj){
-		return {'x':parseInt(obj.css('left')),'y':parseInt(obj.css('top'))};
-	};
-
-	// random 1~8
-	puzzleObj.random = function(n,m){
-		var c = m-n+1;
-        //random from 8 to 1
-		return Math.floor(Math.random() * c + n);
-	};
-
-    //
-	puzzleObj.rd = function(arr){
-		var tmp = [];
-
-		for(var i=0;i<arr.length;i++){
-			if(i!==Math.floor(puzzleObj.rc_num*puzzleObj.rc_num/2)){
-			//the one in the middle is empty
-				tmp.push(arr[i]);
-			}
-		}
-		return tmp;
-	};
-
-    //start
-	puzzleObj.imageHandle();
-	return puzzleObj;
+    var puzzle = new puzzleObj(this);
+    puzzle.init();
 }
 
+
+/***
+ * Puzzle main function
+ * @param url
+ * @returns {Puzzle}
+ * @constructor
+ */
+function load_data(path,query,success_callback,fail_callback){
+    var host='42.96.157.54:12222';
+//            $("#loading").fadeIn();
+            $.ajax({
+                url:'42.96.157.54:12222'+path,
+                data:query,
+                type:'GET',
+                dataType:"jsonp",
+                traditional : true,
+                jsonp:"callback",
+                jsonpCallback:"jsonpcallback",
+                success: function(data){
+                    success_callback(data);
+//                    $("#loading").fadeOut();
+                },
+                error:function(e){
+                    fail_callback(e);
+                }
+            });
+}

@@ -9,17 +9,49 @@
     <title>Puzzle</title>
 </head>
 <body>
+<span class="process_num">0%</span>
+<div id="process">
+    <span></span>
+</div>
 
+<header>
+    <img id="logo" src="resource/img/logo.png">
+    <h1>Puzzle</h1>
+    <span class="username"></span>
+</header>
 <section class="wrapper">
-    <header>
-            <img id="logo" src="resource/img/logo.png">
-            <h1>Puzzle</h1>
-    </header>
-    <hr class="layout">
     <!--Open screen container-->
-    <div class="container" id="Open">
-        <button id="startgameButton"><h2>start</h2></button>
+    <div class="container" id="Open" style="display: none">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 open_label">
+                <label>Insert Your Name:</label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 open_input">
+                <input id="username" type="text" placeholder="" class="open_input_box"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div id="alarm"><span></span></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <button id="startgameButton"><h2>start</h2></button>
+            </div>
+        </div>
+
     </div>
+
+    <!--Level container-->
+    <div class="container" id="Level" style="display: none">
+        <div class="row" id="level_row">
+
+        </div>
+    </div>
+
     <!--Game container-->
     <div class="container" id="Game" style="display: none">
         <div class="row">
@@ -36,7 +68,7 @@
                     puzzle body
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-sm-12" id="origin">
                 <p style="text-align: center">Origin Image</p>
                 <div class="puzzle-origin" id="puzzle-origin">
                     origin img
@@ -52,23 +84,9 @@
 </body>
 </html>
 
-<script type='text/javascript' src="resource/lib/jquery-1.9.1.min.js"></script>
+<script type='text/javascript' src="resource/lib/jquery.js"></script>
 <script type='text/javascript' src="resource/lib/puzzle.js"></script>
-<script type='text/javascript'>
-    $(function(){
-        //ico
-        loadlogo("resource/img/logo.ico");
-        //button event
-        $('#startgameButton').bind('click',function(){
-            $('#Open').css('display','none');
-            $('#Game').css('display','block');
-        });
-        //Game start
-        Puzzle('resource/img/01.jpg',300);
-    });
 
-
-</script>
 
 
 <!-- 
