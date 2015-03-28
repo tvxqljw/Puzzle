@@ -74,6 +74,11 @@ hr.layout {
     margin: 0 auto;
 }
 
+.backLevel{
+    padding-right: 50px;
+    cursor: pointer;
+    color: #17A689;
+}
 
 /*Open*/
 #Open{
@@ -160,6 +165,10 @@ input:-moz-placeholder { color:#FFD131; }
 }
 
 /*Level*/
+#Level h5{
+    text-align: center;
+}
+
 #Level .level_img_box{
     text-align: center;
     padding: 30px 0;
@@ -265,10 +274,6 @@ footer p a{
 /*responsive*/
 @media screen and (max-width: 768px) {
     /*phone*/
-    #origin{
-        display: none;
-    }
-
     #Open .open_input{
         text-align: center;
     }
